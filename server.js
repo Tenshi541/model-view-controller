@@ -18,3 +18,34 @@ const sess = {
     secure: false,
     sameSite: 'strict'
   },
+  resave: false,
+  saveUninitialized: true,
+  store: new SequelizeStore({
+    db: sequelize
+  })
+};
+
+// Set up Handlebars.js engine with custom helpers
+const hbs = exphbs.create({ helpers });
+
+// Set up sessions with cookies
+app.use(session(sess));
+
+// Inform Express.js on which template engine to use
+app.engine('handlebars', hbs.engine);
+app.set('view engine', 'handlebars');
+
+// Middleware
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(express.static(path.join(__dirname, 'public')));
+
+// Turn on routes
+app.use(require('./controllers/'));
+
+app.listen(PORT, () => {
+  console.log(`App listening on port ${PORT}!`);
+  sequelize.sync({ force: false });
+}
+);
+  
