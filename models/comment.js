@@ -1,5 +1,5 @@
 const {
-    DataTypes
+    Model, DataType
 } = require('sequelize');
 const sequelize = require('../config/connection');
 
